@@ -57,7 +57,6 @@ public class Cenario1 {
             if (teclado.keyDown(27)) {
                 while (teclado.keyDown(27)) janela.delay(100);
                 
-                System.out.println("PAUSA ATIVADA");
                 boolean continuar = pauseMenu.mostrar();
                 
                 if(!continuar) {

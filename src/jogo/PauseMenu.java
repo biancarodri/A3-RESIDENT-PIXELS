@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jogo;
 
 import jplay.GameImage;
@@ -10,11 +6,14 @@ import jplay.URL;
 import jplay.Window;
 
 import java.awt.Color;
+import java.awt.event.MouseEvent;
 
 public class PauseMenu {
 
     private Window janela;
     private Keyboard teclado;
+    private String[] opcoes = {"Continuar", "Salvar", "Sair"};
+    private int selecionado = 0;
 
     public PauseMenu(Window janela) {
         this.janela = janela;
@@ -26,8 +25,6 @@ public class PauseMenu {
         while (true) {
             janela.clear(Color.BLACK);
             janela.drawText("JOGO PAUSADO", 300, 150, Color.WHITE);
-            janela.drawText("1 - Continuar", 300, 250, Color.WHITE);
-            janela.drawText("2 - Parar e voltar ao menu", 300, 300, Color.WHITE);
             janela.update();
 
             if (teclado.keyDown(27)) {
@@ -35,11 +32,58 @@ public class PauseMenu {
                 return true; // continuar o jogo
             }
 
-            if (teclado.keyDown(27)) {
-                while (teclado.keyDown(27)) janela.delay(100); 
-                return false; // encerrar o cenário
+
+            
+            for (int i = 0; i < opcoes.length; i++) {
+                Color cor = (i == selecionado) ? Color.YELLOW : Color.WHITE;
+                janela.drawText(opcoes[i], 300, 250 + i * 40, cor);
             }
+
+            janela.update();
+
+            if (teclado.keyDown(Keyboard.DOWN_KEY)) {
+                selecionado = (selecionado + 1) % opcoes.length;
+                esperarSoltarTecla(Keyboard.DOWN_KEY);
+            }
+
+            if (teclado.keyDown(Keyboard.UP_KEY)) {
+                selecionado = (selecionado - 1 + opcoes.length) % opcoes.length;
+                esperarSoltarTecla(Keyboard.UP_KEY);
+            }
+
+            if (teclado.keyDown(Keyboard.ENTER_KEY)) {
+                esperarSoltarTecla(Keyboard.ENTER_KEY);
+                return tratarOpcaoSelecionada();
+            }
+
+            
+
+            janela.delay(100);
+        }
+    }
+
+    private boolean tratarOpcaoSelecionada() {
+        switch (selecionado) {
+            case 0: // Continuar
+                return true;
+            case 1: // Salvar
+                // Implementar lógica de salvar
+                return true;
+            case 2: // Sair
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    private void esperarSoltarTecla(int tecla) {
+        while (teclado.keyDown(tecla)) {
+            janela.delay(100);
         }
     }
 }
+
+        
+    
+
 
